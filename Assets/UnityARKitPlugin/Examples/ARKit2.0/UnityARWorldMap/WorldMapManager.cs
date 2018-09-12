@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.iOS;
 
+using UnityEngine.UI;	
+
 public class WorldMapManager : MonoBehaviour
 {
     [SerializeField]
@@ -12,6 +14,8 @@ public class WorldMapManager : MonoBehaviour
     ARWorldMap m_LoadedMap;
 
 	serializableARWorldMap serializedWorldMap;
+
+
 
     // Use this for initialization
     void Start ()
@@ -37,9 +41,15 @@ public class WorldMapManager : MonoBehaviour
         get { return UnityARSessionNativeInterface.GetARSessionNativeInterface(); }
     }
 
-    static string path
+	string WorldName;
+
+	public InputField worldInput;
+
+	public List<Button> SaveFileButtons; 
+
+    string path
     {
-        get { return Path.Combine(Application.persistentDataPath, "myFirstWorldMap.worldmap"); }
+		get { return Path.Combine(Application.persistentDataPath, WorldName+".worldmap"); }
     }
 
     void OnWorldMap(ARWorldMap worldMap)
@@ -51,10 +61,59 @@ public class WorldMapManager : MonoBehaviour
         }
     }
 
+	public List<string> levelNames;
+
     public void Save()
     {
+		
         session.GetCurrentWorldMapAsync(OnWorldMap);
+
+
+
     }
+
+	public void ResetScene() {
+		ARKitWorldTrackingSessionConfiguration sessionConfig = new ARKitWorldTrackingSessionConfiguration ( UnityARAlignment.UnityARAlignmentGravity, UnityARPlaneDetection.HorizontalAndVertical);
+		UnityARSessionNativeInterface.GetARSessionNativeInterface().RunWithConfigAndOptions(sessionConfig, UnityARSessionRunOption.ARSessionRunOptionRemoveExistingAnchors | UnityARSessionRunOption.ARSessionRunOptionResetTracking);
+	}
+
+
+	public GameObject menuObject;
+
+	public GameObject MenuHolder;
+
+	public List<GameObject> menuList = new List<GameObject>();
+	public void PopulateLoadMenu() {
+
+		for (int i = 0; i < menuList.Count; i++) {
+			Destroy (menuList [i]);
+
+
+
+
+		}
+		menuList.Clear ();
+
+
+		for (int i = 0; i < levelNames.Count; i++) {
+			GameObject menuobj = Instantiate (menuObject) as GameObject;
+
+			menuobj.transform.parent = MenuHolder.transform;
+
+			menuList.Add (menuobj);
+
+			string levelName = levelNames [i];
+
+			LoadFromLocationID loader = menuobj.GetComponent<LoadFromLocationID> ();
+
+			loader.Setup (levelName,this);
+
+		}
+
+
+
+
+	}
 
     public void Load()
     {
@@ -91,12 +150,26 @@ public class WorldMapManager : MonoBehaviour
 
 	public void SaveSerialized()
 	{
+
+		WorldName = worldInput.text;
+		levelNames.Add (WorldName);
+
+
 		session.GetCurrentWorldMapAsync(OnWorldMapSerialized);
 	}
 
+	public void LoadWithNewName(string newName) {
+		WorldName = newName;
+		LoadSerialized ();
+
+		LoadMenuPanel.SetActive (false);
+	}
+
+	public GameObject LoadMenuPanel;
+
 	public void LoadSerialized()
 	{
-		Debug.Log("Loading ARWorldMap from serialized data");
+		Debug.Log("Loading ARWorldMap from serialized data: "+WorldName);
 		//we have an operator that converts a serializableARWorldMap to a ARWorldMap
 		ARWorldMap worldMap = serializedWorldMap;
 		if (worldMap != null)

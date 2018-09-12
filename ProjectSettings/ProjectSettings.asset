@@ -11,8 +11,8 @@ PlayerSettings:
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 60
-  companyName: Unity
-  productName: SharedSpheres
+  companyName: Realidyne
+  productName: Persistence
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
@@ -161,7 +161,7 @@ PlayerSettings:
     Android: com.sleepingbeastgames.CaptainsMessExample
     Standalone: unity.DefaultCompany.CaptainsMess
     Tizen: com.sleepingbeastgames.CaptainsMessExample
-    iOS: com.unity.arkit.sharedspheres
+    iOS: com.Realidyne.Persistence
     tvOS: com.sleepingbeastgames.CaptainsMessExample
   buildNumber:
     iOS: 0
@@ -240,7 +240,7 @@ PlayerSettings:
   metalEditorSupport: 0
   metalAPIValidation: 1
   iOSRenderExtraFrameOnPause: 1
-  appleDeveloperTeamID: 
+  appleDeveloperTeamID: 3PK5CVW843
   iOSManualSigningProvisioningProfileID: 
   tvOSManualSigningProvisioningProfileID: 
   appleEnableAutomaticSigning: 0
