@@ -14,3 +14,4 @@ MonoBehaviour:
   resourceGroupName: ExampleObjectsResourceGroup
   referenceObjectAssets:
   - {fileID: 11400000, guid: e19bf88186ac942868db78225b734e9c, type: 2}
+  - {fileID: 11400000, guid: 602d4d705297744658e1c4fba9fe87f3, type: 2}

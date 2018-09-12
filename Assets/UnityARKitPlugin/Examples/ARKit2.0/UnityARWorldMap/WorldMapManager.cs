@@ -65,18 +65,18 @@ public class WorldMapManager : MonoBehaviour
 
     public void Save()
     {
-		
         session.GetCurrentWorldMapAsync(OnWorldMap);
-
-
-
     }
+	public BallMaker ballMaker;
 
 	public void ResetScene() {
-		ARKitWorldTrackingSessionConfiguration sessionConfig = new ARKitWorldTrackingSessionConfiguration ( UnityARAlignment.UnityARAlignmentGravity, UnityARPlaneDetection.HorizontalAndVertical);
+
+		ballMaker.ClearBalls ();
+
+
+		ARKitWorldTrackingSessionConfiguration sessionConfig = new ARKitWorldTrackingSessionConfiguration ( UnityARAlignment.UnityARAlignmentGravity, UnityARPlaneDetection.HorizontalAndVertical,true,true);
 		UnityARSessionNativeInterface.GetARSessionNativeInterface().RunWithConfigAndOptions(sessionConfig, UnityARSessionRunOption.ARSessionRunOptionRemoveExistingAnchors | UnityARSessionRunOption.ARSessionRunOptionResetTracking);
 	}
-
 
 	public GameObject menuObject;
 
@@ -87,10 +87,6 @@ public class WorldMapManager : MonoBehaviour
 
 		for (int i = 0; i < menuList.Count; i++) {
 			Destroy (menuList [i]);
-
-
-
-
 		}
 		menuList.Clear ();
 
@@ -109,10 +105,6 @@ public class WorldMapManager : MonoBehaviour
 			loader.Setup (levelName,this);
 
 		}
-
-
-
-
 	}
 
     public void Load()
@@ -132,6 +124,8 @@ public class WorldMapManager : MonoBehaviour
 
 			Debug.Log("Restarting session with worldMap");
 			session.RunWithConfigAndOptions(config, runOption);
+
+			ballMaker.LoadBalls (WorldName);
 
         }
     }
@@ -156,6 +150,11 @@ public class WorldMapManager : MonoBehaviour
 
 
 		session.GetCurrentWorldMapAsync(OnWorldMapSerialized);
+
+
+		ballMaker.SaveBalls (WorldName);
+
+
 	}
 
 	public void LoadWithNewName(string newName) {
@@ -185,6 +184,9 @@ public class WorldMapManager : MonoBehaviour
 
 			Debug.Log("Restarting session with worldMap");
 			session.RunWithConfigAndOptions(config, runOption);
+
+
+			ballMaker.LoadBalls (WorldName);
 		}
 
 	}
